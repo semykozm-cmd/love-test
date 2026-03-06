@@ -1,0 +1,27 @@
+import tkinter as tk
+import random
+
+root = tk.Tk()
+root.title("Супер важливий тест")
+root.geometry("500x400")
+
+label = tk.Label(root, text="Ти лох? 😏", font=("Arial", 24))
+label.pack(pady=50)
+
+def yes():
+    label.config(text="Я так і знав 😂")
+
+def move_button(event):
+    x = random.randint(0,400)
+    y = random.randint(0,300)
+    no_btn.place(x=x,y=y)
+
+yes_btn = tk.Button(root,text="Так 😔",font=("Arial",16),command=yes)
+yes_btn.pack()
+
+no_btn = tk.Button(root,text="Ні 😎",font=("Arial",16))
+no_btn.place(x=250,y=200)
+
+no_btn.bind("<Enter>", move_button)
+
+root.mainloop()
