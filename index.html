@@ -1,27 +1,75 @@
-import tkinter as tk
-import random
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Супер важливий тест</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+            overflow: hidden; /* Щоб кнопка не створювала прокрутку */
+        }
+        h1 {
+            font-size: 48px;
+            margin-bottom: 50px;
+        }
+        .buttons {
+            display: flex;
+            gap: 20px;
+        }
+        button {
+            padding: 10px 30px;
+            font-size: 20px;
+            cursor: pointer;
+            border-radius: 10px;
+            border: none;
+            transition: 0.2s;
+        }
+        #yes-btn {
+            background-color: #ff4d4d;
+            color: white;
+        }
+        #no-btn {
+            background-color: #4CAF50;
+            color: white;
+            position: absolute; /* Дозволяє кнопці вільно рухатись */
+            left: 55%;
+            top: 55%;
+        }
+    </style>
+</head>
+<body>
 
-root = tk.Tk()
-root.title("Супер важливий тест")
-root.geometry("500x400")
+    <h1 id="main-label">Ти лох? 😏</h1>
 
-label = tk.Label(root, text="Ти лох? 😏", font=("Arial", 24))
-label.pack(pady=50)
+    <div class="buttons">
+        <button id="yes-btn" onclick="sayYes()">Так 😔</button>
+        <button id="no-btn" onmouseover="moveButton()">Ні 😎</button>
+    </div>
 
-def yes():
-    label.config(text="Я так і знав 😂")
+    <script>
+        function sayYes() {
+            document.getElementById('main-label').innerText = "Я так і знав 😂";
+            document.getElementById('no-btn').style.display = 'none'; // Ховаємо кнопку "Ні"
+        }
 
-def move_button(event):
-    x = random.randint(0,400)
-    y = random.randint(0,300)
-    no_btn.place(x=x,y=y)
+        function moveButton() {
+            const btn = document.getElementById('no-btn');
+            // Обчислюємо випадкові координати, щоб кнопка не вилазила за межі екрана
+            const x = Math.random() * (window.innerWidth - btn.clientWidth);
+            const y = Math.random() * (window.innerHeight - btn.clientHeight);
+            
+            btn.style.left = x + 'px';
+            btn.style.top = y + 'px';
+        }
+    </script>
 
-yes_btn = tk.Button(root,text="Так 😔",font=("Arial",16),command=yes)
-yes_btn.pack()
-
-no_btn = tk.Button(root,text="Ні 😎",font=("Arial",16))
-no_btn.place(x=250,y=200)
-
-no_btn.bind("<Enter>", move_button)
-
-root.mainloop()
+</body>
+</html>
