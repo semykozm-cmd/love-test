@@ -3,156 +3,128 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Сюрприз ❤️</title>
+    <title>Для тебе ❤️</title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #fff0f5;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            margin: 0;
-            text-align: center;
-        }
-        .container {
-            background: white;
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            max-width: 500px;
-            width: 90%;
-        }
-        /* Стилі для гри Меморі */
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-            margin: 20px 0;
-        }
-        .card {
-            width: 70px;
-            height: 70px;
-            background-color: #ffb6c1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            cursor: pointer;
-            border-radius: 10px;
-            user-select: none;
-        }
-        .card.open { background-color: white; border: 2px solid #ffb6c1; }
-        
-        /* Стилі кнопок */
-        button {
-            padding: 10px 20px;
-            font-size: 16px;
-            margin: 5px;
-            cursor: pointer;
-            border: none;
-            border-radius: 8px;
-            background-color: #ff69b4;
-            color: white;
-            transition: 0.3s;
-        }
-        button:hover { background-color: #ff1493; }
-        .hidden { display: none; }
+        body { font-family: 'Arial', sans-serif; background-color: #fff0f5; color: #333; display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; overflow-x: hidden; }
+        .container { background: white; padding: 40px; border-radius: 30px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); max-width: 550px; width: 90%; text-align: center; }
         h1 { color: #d02090; }
+        .btn { padding: 12px 25px; font-size: 18px; margin: 10px; cursor: pointer; border: none; border-radius: 15px; background-color: #ff69b4; color: white; transition: 0.3s; }
+        .btn:hover { background-color: #ff1493; transform: scale(1.05); }
+        .hidden { display: none; }
+        .options { text-align: left; display: inline-block; margin: 20px 0; }
+        .option { margin: 12px 0; font-size: 18px; display: block; cursor: pointer; }
+        .option input { margin-right: 10px; transform: scale(1.3); }
+        .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 20px 0; }
+        .card { width: 60px; height: 60px; background-color: #ffb6c1; display: flex; align-items: center; justify-content: center; font-size: 24px; cursor: pointer; border-radius: 12px; color: transparent; user-select: none; }
+        .card.open { background-color: white; border: 2px solid #ffb6c1; color: black; }
     </style>
 </head>
 <body>
 
-<div class="container" id="game-section">
-    <h1>Давай зіграємо перед сюрпризом</h1>
-    <p id="moves-label">Ходи: 0</p>
-    <div class="grid" id="grid"></div>
-    <button onclick="startTest()">Пропустити гру</button>
+<div class="container" id="step1">
+    <h1>Привіт, кицю! 👋</h1>
+    <p>Я зробив це спеціально для тебе до 8 березня...</p>
+    <p>Натисни на кнопку, якщо готова до маленького сюрпризу! ✨</p>
+    <button class="btn" onclick="nextStep(1, 2)">Почати ❤️</button>
 </div>
 
-<div class="container hidden" id="test-section">
-    <h1>Чому я тебе люблю?</h1>
-    <button onclick="answer('Факт 👍')">Бо ти красива 😌</button>
-    <button onclick="answer('І це правда')">Бо ти смішна 😂</button>
-    <button onclick="answer('Хитра 😂')">Пропустити питання 🤔</button>
-    <h2 id="test-result" style="margin-top: 20px; min-height: 30px;"></h2>
+<div class="container hidden" id="step2">
+    <h1>Чому я тебе люблю? ❤️</h1>
+    <p>(Можна вибрати декілька варіантів)</p>
+    <div class="options">
+        <label class="option"><input type="checkbox" class="love-opt"> Бо ти неймовірно красива 😍</label>
+        <label class="option"><input type="checkbox" class="love-opt"> За твоє почуття гумору 😂</label>
+        <label class="option"><input type="checkbox" class="love-opt"> Бо ти дуже турботлива 🤗</label>
+        <label class="option"><input type="checkbox" class="love-opt"> За твій милий сміх 🍓</label>
+        <label class="option"><input type="checkbox" class="love-opt"> Бо ти особлива для мене ✨</label>
+        <label class="option"><input type="checkbox" class="love-opt"> Просто за те, що ти поруч ❤️</label>
+    </div>
     <br>
-    <button id="next-btn" class="hidden" onclick="showFinal()">Далі ❤️</button>
+    <button class="btn" onclick="checkTest()">Далі</button>
+    <button class="btn" style="background-color: #ccc;" onclick="funnySkip()">Пропустити</button>
+    <p id="funny-text" style="color: red; font-weight: bold; margin-top: 10px;"></p>
 </div>
 
-<div class="container hidden" id="final-section">
-    <h1 style="font-size: 32px;">Сюрприз 🎉</h1>
-    <p style="font-size: 24px;">Ти дуже особлива для мене ❤️</p>
+<div class="container hidden" id="step3">
+    <h1>Маленька гра 🎮</h1>
+    <p>Знайди всі пари емодзі!</p>
+    <div class="grid" id="grid"></div>
+</div>
+
+<div class="container hidden" id="step5">
+    <h1>Я ТЕБЕ ЛЮБЛЮ! ❤️</h1>
+    <p>Зі святом 8 березня! Дякую, що ти є в моєму житті.</p>
+    <br>
+    <button class="btn" id="final-btn" onclick="celebrate()">Я тебе теж! 🥰</button>
 </div>
 
 <script>
-    // Логіка гри Меморі
-    const symbols = ["❤️","🎀","🌸","💎","🍓","🎁", "❤️","🎀","🌸","💎","🍓","🎁"];
-    let shuffled = symbols.sort(() => 0.5 - Math.random());
-    let firstCard = null;
-    let moves = 0;
-    let lockBoard = false;
-    let matchedPairs = 0;
+    function nextStep(current, next) {
+        document.getElementById('step' + current).classList.add('hidden');
+        document.getElementById('step' + next).classList.remove('hidden');
+        if (next === 3) initGame();
+    }
 
-    const grid = document.getElementById('grid');
-    shuffled.forEach((symbol, index) => {
-        const card = document.createElement('div');
-        card.classList.add('card');
-        card.dataset.symbol = symbol;
-        card.dataset.index = index;
-        card.innerText = "?";
-        card.onclick = () => flipCard(card);
-        grid.appendChild(card);
-    });
+    function funnySkip() {
+        const phrases = [
+            "Ей, так не можна! Вибирай давай! 😤",
+            "Хитра яка! Ану постав хоча б пару галочок! 😂",
+            "Я старався, писав, а ти 'пропустити'? Вибери щось нормальне! ✨"
+        ];
+        document.getElementById('funny-text').innerText = phrases[Math.floor(Math.random() * phrases.length)];
+    }
 
-    function flipCard(card) {
-        if (lockBoard || card.classList.contains('open') || card === firstCard) return;
-
-        card.innerText = card.dataset.symbol;
-        card.classList.add('open');
-
-        if (!firstCard) {
-            firstCard = card;
-            return;
-        }
-
-        moves++;
-        document.getElementById('moves-label').innerText = `Ходи: ${moves}`;
-
-        if (firstCard.dataset.symbol === card.dataset.symbol) {
-            matchedPairs++;
-            firstCard = null;
-            if (matchedPairs === 6) setTimeout(startTest, 500);
+    function checkTest() {
+        if (document.querySelectorAll('.love-opt:checked').length < 1) {
+            document.getElementById('funny-text').innerText = "Ну вибери хоча б один варіант! ❤️";
         } else {
-            lockBoard = true;
-            setTimeout(() => {
-                firstCard.innerText = "?";
-                card.innerText = "?";
-                firstCard.classList.remove('open');
-                card.classList.remove('open');
-                firstCard = null;
-                lockBoard = false;
-            }, 700);
+            nextStep(2, 3);
         }
     }
 
-    // Переходи між секціями
-    function startTest() {
-        document.getElementById('game-section').classList.add('hidden');
-        document.getElementById('test-section').classList.remove('hidden');
+    function initGame() {
+        const symbols = ["❤️","🌸","🍓","💎","🎀","🎁","❤️","🌸","🍓","💎","🎀","🎁"];
+        let shuffled = symbols.sort(() => 0.5 - Math.random());
+        const grid = document.getElementById('grid');
+        let firstCard = null, matched = 0;
+
+        shuffled.forEach(s => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.innerText = s;
+            card.onclick = function() {
+                if (this.classList.contains('open') || firstCard === this) return;
+                this.classList.add('open');
+                if (!firstCard) { firstCard = this; } 
+                else {
+                    if (firstCard.innerText === this.innerText) {
+                        matched++; firstCard = null;
+                        if (matched === 6) setTimeout(() => nextStep(3, 5), 1000);
+                    } else {
+                        let prev = firstCard; firstCard = null;
+                        setTimeout(() => { prev.classList.remove('open'); this.classList.remove('open'); }, 500);
+                    }
+                }
+            };
+            grid.appendChild(card);
+        });
     }
 
-    function answer(text) {
-        document.getElementById('test-result').innerText = text;
-        document.getElementById('next-btn').classList.remove('hidden');
-    }
-
-    function showFinal() {
-        document.getElementById('test-section').classList.add('hidden');
-        document.getElementById('final-section').classList.remove('hidden');
+    function celebrate() {
+        const duration = 5 * 1000;
+        const animationEnd = Date.now() + duration;
+        const interval = setInterval(function() {
+            const timeLeft = animationEnd - Date.now();
+            if (timeLeft <= 0) return clearInterval(interval);
+            confetti({
+                particleCount: 50, spread: 360,
+                origin: { x: Math.random(), y: Math.random() - 0.2 },
+                shapes: ['heart'], colors: ['#ff69b4', '#ff1493']
+            });
+        }, 250);
+        document.getElementById('final-btn').innerText = "Цьом! 🥰";
     }
 </script>
-
 </body>
 </html>
