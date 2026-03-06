@@ -3,73 +3,156 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Супер важливий тест</title>
+    <title>Сюрприз ❤️</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
+            background-color: #fff0f5;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 100vh;
+            min-height: 100vh;
             margin: 0;
-            background-color: #f0f0f0;
-            overflow: hidden; /* Щоб кнопка не створювала прокрутку */
+            text-align: center;
         }
-        h1 {
-            font-size: 48px;
-            margin-bottom: 50px;
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            max-width: 500px;
+            width: 90%;
         }
-        .buttons {
+        /* Стилі для гри Меморі */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin: 20px 0;
+        }
+        .card {
+            width: 70px;
+            height: 70px;
+            background-color: #ffb6c1;
             display: flex;
-            gap: 20px;
-        }
-        button {
-            padding: 10px 30px;
-            font-size: 20px;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
             cursor: pointer;
             border-radius: 10px;
+            user-select: none;
+        }
+        .card.open { background-color: white; border: 2px solid #ffb6c1; }
+        
+        /* Стилі кнопок */
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin: 5px;
+            cursor: pointer;
             border: none;
-            transition: 0.2s;
-        }
-        #yes-btn {
-            background-color: #ff4d4d;
+            border-radius: 8px;
+            background-color: #ff69b4;
             color: white;
+            transition: 0.3s;
         }
-        #no-btn {
-            background-color: #4CAF50;
-            color: white;
-            position: absolute; /* Дозволяє кнопці вільно рухатись */
-            left: 55%;
-            top: 55%;
-        }
+        button:hover { background-color: #ff1493; }
+        .hidden { display: none; }
+        h1 { color: #d02090; }
     </style>
 </head>
 <body>
 
-    <h1 id="main-label">Ти лох? 😏</h1>
+<div class="container" id="game-section">
+    <h1>Давай зіграємо перед сюрпризом</h1>
+    <p id="moves-label">Ходи: 0</p>
+    <div class="grid" id="grid"></div>
+    <button onclick="startTest()">Пропустити гру</button>
+</div>
 
-    <div class="buttons">
-        <button id="yes-btn" onclick="sayYes()">Так 😔</button>
-        <button id="no-btn" onmouseover="moveButton()">Ні 😎</button>
-    </div>
+<div class="container hidden" id="test-section">
+    <h1>Чому я тебе люблю?</h1>
+    <button onclick="answer('Факт 👍')">Бо ти красива 😌</button>
+    <button onclick="answer('І це правда')">Бо ти смішна 😂</button>
+    <button onclick="answer('Хитра 😂')">Пропустити питання 🤔</button>
+    <h2 id="test-result" style="margin-top: 20px; min-height: 30px;"></h2>
+    <br>
+    <button id="next-btn" class="hidden" onclick="showFinal()">Далі ❤️</button>
+</div>
 
-    <script>
-        function sayYes() {
-            document.getElementById('main-label').innerText = "Я так і знав 😂";
-            document.getElementById('no-btn').style.display = 'none'; // Ховаємо кнопку "Ні"
+<div class="container hidden" id="final-section">
+    <h1 style="font-size: 32px;">Сюрприз 🎉</h1>
+    <p style="font-size: 24px;">Ти дуже особлива для мене ❤️</p>
+</div>
+
+<script>
+    // Логіка гри Меморі
+    const symbols = ["❤️","🎀","🌸","💎","🍓","🎁", "❤️","🎀","🌸","💎","🍓","🎁"];
+    let shuffled = symbols.sort(() => 0.5 - Math.random());
+    let firstCard = null;
+    let moves = 0;
+    let lockBoard = false;
+    let matchedPairs = 0;
+
+    const grid = document.getElementById('grid');
+    shuffled.forEach((symbol, index) => {
+        const card = document.createElement('div');
+        card.classList.add('card');
+        card.dataset.symbol = symbol;
+        card.dataset.index = index;
+        card.innerText = "?";
+        card.onclick = () => flipCard(card);
+        grid.appendChild(card);
+    });
+
+    function flipCard(card) {
+        if (lockBoard || card.classList.contains('open') || card === firstCard) return;
+
+        card.innerText = card.dataset.symbol;
+        card.classList.add('open');
+
+        if (!firstCard) {
+            firstCard = card;
+            return;
         }
 
-        function moveButton() {
-            const btn = document.getElementById('no-btn');
-            // Обчислюємо випадкові координати, щоб кнопка не вилазила за межі екрана
-            const x = Math.random() * (window.innerWidth - btn.clientWidth);
-            const y = Math.random() * (window.innerHeight - btn.clientHeight);
-            
-            btn.style.left = x + 'px';
-            btn.style.top = y + 'px';
+        moves++;
+        document.getElementById('moves-label').innerText = `Ходи: ${moves}`;
+
+        if (firstCard.dataset.symbol === card.dataset.symbol) {
+            matchedPairs++;
+            firstCard = null;
+            if (matchedPairs === 6) setTimeout(startTest, 500);
+        } else {
+            lockBoard = true;
+            setTimeout(() => {
+                firstCard.innerText = "?";
+                card.innerText = "?";
+                firstCard.classList.remove('open');
+                card.classList.remove('open');
+                firstCard = null;
+                lockBoard = false;
+            }, 700);
         }
-    </script>
+    }
+
+    // Переходи між секціями
+    function startTest() {
+        document.getElementById('game-section').classList.add('hidden');
+        document.getElementById('test-section').classList.remove('hidden');
+    }
+
+    function answer(text) {
+        document.getElementById('test-result').innerText = text;
+        document.getElementById('next-btn').classList.remove('hidden');
+    }
+
+    function showFinal() {
+        document.getElementById('test-section').classList.add('hidden');
+        document.getElementById('final-section').classList.remove('hidden');
+    }
+</script>
 
 </body>
 </html>
