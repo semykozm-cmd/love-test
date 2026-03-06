@@ -3,15 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Для тебе ❤️</title>
+    <title>Для моєї найкращої ❤️</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
         body { font-family: 'Arial', sans-serif; background-color: #fff0f5; color: #333; display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; overflow-x: hidden; }
         .container { background: white; padding: 40px; border-radius: 30px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); max-width: 550px; width: 90%; text-align: center; }
-        h1 { color: #d02090; }
+        h1 { color: #d02090; margin-bottom: 20px; }
         .btn { padding: 12px 25px; font-size: 18px; margin: 10px; cursor: pointer; border: none; border-radius: 15px; background-color: #ff69b4; color: white; transition: 0.3s; }
         .btn:hover { background-color: #ff1493; transform: scale(1.05); }
         .hidden { display: none; }
+        
+        /* Спогади */
+        .memory-scroll { max-height: 500px; overflow-y: auto; padding-right: 10px; margin-top: 20px; }
+        .memory-card { margin-bottom: 40px; border-bottom: 2px dashed #ffb6c1; padding-bottom: 20px; }
+        .memory-img { max-width: 100%; border-radius: 20px; box-shadow: 0 8px 20px rgba(0,0,0,0.15); }
+        .memory-text { font-style: italic; color: #d02090; margin-top: 15px; font-size: 18px; font-weight: bold; }
+
         .options { text-align: left; display: inline-block; margin: 20px 0; }
         .option { margin: 12px 0; font-size: 18px; display: block; cursor: pointer; }
         .option input { margin-right: 10px; transform: scale(1.3); }
@@ -24,21 +31,18 @@
 
 <div class="container" id="step1">
     <h1>Привіт, кицю! 👋</h1>
-    <p>Я зробив це спеціально для тебе до 8 березня...</p>
-    <p>Натисни на кнопку, якщо готова до маленького сюрпризу! ✨</p>
-    <button class="btn" onclick="nextStep(1, 2)">Почати ❤️</button>
+    <img src="IMG_0651.webp" style="width: 80%; border-radius: 20px; margin-bottom: 20px;">
+    <p>Я зробив цей сайт спеціально для тебе до 8 березня... ❤️</p>
+    <button class="btn" onclick="nextStep(1, 2)">Почати пригоду ✨</button>
 </div>
 
 <div class="container hidden" id="step2">
     <h1>Чому я тебе люблю? ❤️</h1>
-    <p>(Можна вибрати декілька варіантів)</p>
     <div class="options">
         <label class="option"><input type="checkbox" class="love-opt"> Бо ти неймовірно красива 😍</label>
-        <label class="option"><input type="checkbox" class="love-opt"> За твоє почуття гумору 😂</label>
-        <label class="option"><input type="checkbox" class="love-opt"> Бо ти дуже турботлива 🤗</label>
-        <label class="option"><input type="checkbox" class="love-opt"> За твій милий сміх 🍓</label>
-        <label class="option"><input type="checkbox" class="love-opt"> Бо ти особлива для мене ✨</label>
-        <label class="option"><input type="checkbox" class="love-opt"> Просто за те, що ти поруч ❤️</label>
+        <label class="option"><input type="checkbox" class="love-opt"> За твій характер та сміх 😂</label>
+        <label class="option"><input type="checkbox" class="love-opt"> Бо з тобою я справжній 🤗</label>
+        <label class="option"><input type="checkbox" class="love-opt"> Просто за те, що ти моя ✨</label>
     </div>
     <br>
     <button class="btn" onclick="checkTest()">Далі</button>
@@ -47,14 +51,46 @@
 </div>
 
 <div class="container hidden" id="step3">
-    <h1>Маленька гра 🎮</h1>
-    <p>Знайди всі пари емодзі!</p>
+    <h1>Знайди всі пари! 🎮</h1>
     <div class="grid" id="grid"></div>
+</div>
+
+<div class="container hidden" id="step4">
+    <h1>Наші спогади ✨</h1>
+    <div class="memory-scroll">
+        
+        <div class="memory-card">
+            <img src="IMG_9243.webp" class="memory-img">
+            <p class="memory-text">Літо, сонце і ти... Найкращий відпочинок 🌿</p>
+        </div>
+
+        <div class="memory-card">
+            <img src="IMG_9552.webp" class="memory-img">
+            <p class="memory-text">Ми з тобою — одна команда! 🏍️💨</p>
+        </div>
+
+        <div class="memory-card">
+            <img src="IMG_0565.webp" class="memory-img">
+            <p class="memory-text">Біля ялинки з моєю зірочкою 🎄❤️</p>
+        </div>
+
+        <div class="memory-card">
+            <img src="IMG_9866.webp" class="memory-img">
+            <p class="memory-text">Просто люблю ці моменти з тобою 💫</p>
+        </div>
+
+        <div class="memory-card">
+            <img src="IMG_0974.webp" class="memory-img">
+            <p class="memory-text">Ти наймиліша у світі! ✨</p>
+        </div>
+
+    </div>
+    <button class="btn" onclick="nextStep(4, 5)">І нарешті... 🎁</button>
 </div>
 
 <div class="container hidden" id="step5">
     <h1>Я ТЕБЕ ЛЮБЛЮ! ❤️</h1>
-    <p>Зі святом 8 березня! Дякую, що ти є в моєму житті.</p>
+    <p>Зі святом 8 березня! Дякую за кожен момент разом.</p>
     <br>
     <button class="btn" id="final-btn" onclick="celebrate()">Я тебе теж! 🥰</button>
 </div>
@@ -67,17 +103,12 @@
     }
 
     function funnySkip() {
-        const phrases = [
-            "Ей, так не можна! Вибирай давай! 😤",
-            "Хитра яка! Ану постав хоча б пару галочок! 😂",
-            "Я старався, писав, а ти 'пропустити'? Вибери щось нормальне! ✨"
-        ];
-        document.getElementById('funny-text').innerText = phrases[Math.floor(Math.random() * phrases.length)];
+        document.getElementById('funny-text').innerText = "Не хитруй, вибери варіанти! 😂";
     }
 
     function checkTest() {
         if (document.querySelectorAll('.love-opt:checked').length < 1) {
-            document.getElementById('funny-text').innerText = "Ну вибери хоча б один варіант! ❤️";
+            document.getElementById('funny-text').innerText = "Вибери хоча б один пункт! ❤️";
         } else {
             nextStep(2, 3);
         }
@@ -88,11 +119,9 @@
         let shuffled = symbols.sort(() => 0.5 - Math.random());
         const grid = document.getElementById('grid');
         let firstCard = null, matched = 0;
-
         shuffled.forEach(s => {
             const card = document.createElement('div');
-            card.className = 'card';
-            card.innerText = s;
+            card.className = 'card'; card.innerText = s;
             card.onclick = function() {
                 if (this.classList.contains('open') || firstCard === this) return;
                 this.classList.add('open');
@@ -100,31 +129,4 @@
                 else {
                     if (firstCard.innerText === this.innerText) {
                         matched++; firstCard = null;
-                        if (matched === 6) setTimeout(() => nextStep(3, 5), 1000);
-                    } else {
-                        let prev = firstCard; firstCard = null;
-                        setTimeout(() => { prev.classList.remove('open'); this.classList.remove('open'); }, 500);
-                    }
-                }
-            };
-            grid.appendChild(card);
-        });
-    }
-
-    function celebrate() {
-        const duration = 5 * 1000;
-        const animationEnd = Date.now() + duration;
-        const interval = setInterval(function() {
-            const timeLeft = animationEnd - Date.now();
-            if (timeLeft <= 0) return clearInterval(interval);
-            confetti({
-                particleCount: 50, spread: 360,
-                origin: { x: Math.random(), y: Math.random() - 0.2 },
-                shapes: ['heart'], colors: ['#ff69b4', '#ff1493']
-            });
-        }, 250);
-        document.getElementById('final-btn').innerText = "Цьом! 🥰";
-    }
-</script>
-</body>
-</html>
+                        if (matched === 6) setTimeout(() => next
